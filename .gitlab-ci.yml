@@ -1,0 +1,27 @@
+variables:
+  CI_REGISTRY_USERNAME: your-registry-username
+  CI_REGISTRY_PASSWORD : your-registry-password
+  CI_REGISTRY_REPO : your-registry-repo
+
+stages:
+  - test
+  - build
+
+test:
+  stage: test
+  image: docker:latest
+  script:
+    - docker build --pull -f Dockerfile -t ${CI_REGISTRY_REPO}/gitops-deploy:wip .
+    - docker push ${CI_REGISTRY_REPO}/gitops-deploy:wip
+  before_script:
+    - docker login -u "${CI_REGISTRY_USERNAME}" -p "${CI_REGISTRY_PASSWORD}"
+
+build:
+  stage: build
+  image: docker:latest
+  when: manual
+  script:
+    - docker build --pull -f Dockerfile -t ${CI_REGISTRY_REPO}/gitops-deploy:latest .
+    - docker push ${CI_REGISTRY_REPO}/gitops-deploy:latest
+  before_script:
+    - docker login -u "${CI_REGISTRY_USERNAME}" -p "${CI_REGISTRY_PASSWORD}"
