@@ -12,6 +12,14 @@ It's really possible (I hope not ^^) that I "reinventend the wheel" here so if y
 - the .yaml file you want to modify does only describe 1 Deployment having 1 container
 - Deployment name is the same as the Docker image name (like this : repo/**deployment-name**:tag)
 
+## Description of environment variables used by the current script
+- CLUSTER_GIT_CLONE_URL : the cluster Git repo URL to git clone (through SSH)
+- YAML_FILE_PATH : the path to the .yaml file containing the Deployment to update
+- NAMESPACE : the namespace belonging to your Deployment
+- DOCKER_REPO : the name of the registry repo of your image to deploy (*repo*/deployment-name:tag)
+- DOCKER_IMAGE : the name of your image to deploy (repo/*deployment-name*:tag)
+- DOCKER_TAG : the tag of your image to deploy (repo/deployment-name:*tag*)
+
 ## How to build your first gitops-deploy image ?
 - simply git clone this repo, if you host it somewhere : make sure this Git repo will be PRIVATE (regarding the SSH key)
 - handle the TODO in [Dockerfile](Dockerfile)
