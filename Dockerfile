@@ -9,7 +9,7 @@ RUN git config --global user.name "your-git-username"
 RUN mkdir /root/.ssh
 COPY id_rsa* /root/.ssh/
 RUN chmod 400 /root/.ssh/id_rsa*
-# assuming the Git repo is on gitlab.com, so adapt accordingly
+# TODO : this line does assume this Git repo is on gitlab.com, so adapt accordingly
 RUN echo -e "Host gitlab.com\n\tStrictHostKeyChecking no" > /root/.ssh/config
 
 COPY main.sh /
