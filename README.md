@@ -1,2 +1,46 @@
 # gitops-deploy
-(Work In Progress) A simple Docker image to use in your CI pipeline and help you commit the right line in your repo containing your Kubernetes .yaml manifests (which will make your GitOps tool trigger the actual deployment)
+
+## Why ?
+During my learning of GitOps philosophy, I found out that many of existing tools and articles do assume that you are already taking care of the last step in your CI pipeline to commit / push the right modification in the right file of the Git repo that describes your Kubernetes cluster for example. 
+And this push will trigger the actual deployment.
+
+It took me some time to achieve this and I was thinking : it's probably sure that some people will face this exact situation in the future during their researches. So I am sharing this simple script here if that can help you to gain some time with that!
+
+It's really possible (I hope not ^^) that I "reinventend the wheel" here so if you know an existing similar repo or way to achieve the exact same purpose, please let me know. I precise that the goal is to avoid the using of an external CLI (like Flux one for example), only git command line, to follow the GitOps philosophy and have a CI pipeline completely independent of the GitOps agent pulling the changes.
+
+## Assumptions of the current script
+- the .yaml file you want to modify does only describe 1 Deployment having 1 container
+- Deployment name is the same as the Docker image name (like this : repo/**deployment-name**:tag)
+
+## How to build your first gitops-deploy image ?
+- simply git clone this repo, if you host it somewhere : make sure this Git repo will be PRIVATE (regarding the SSH key)
+- handle the TODO in [Dockerfile](Dockerfile)
+- generate a new SSH key and follow the TODO in [id_rsa](id_rsa) and [id_rsa.pub](id_rsa.pub)
+- add this SSH key to the Git user you put in [Dockerfile](Dockerfile)
+- read [main.sh](main.sh) and adapt it according your needs (do not hesitate to ask questions here!)
+
+- use the [Dockerfile](Dockerfile) to build and push your gitops-deploy image (you can use the [.gitlab-ci.yml](.gitlab-ci.yml) template if host your repo in Gitlab) : make sure your image access will be PRIVATE (regarding the SSH key)
+
+## How to use it ?
+- at the end of your CI pipeline, you can use docker CLI directly (if your job has access to it of course) like this :
+```
+docker run -e CLUSTER_GIT_CLONE_URL=your-url -e YAML_FILE_PATH=your-path ... THE_DOCKER_IMAGE_YOU_BUILT_ABOVE "./main.sh"
+```
+- if your project is hosted in Gitlab, you can use the equivalent snippet
+```
+deploy:
+  stage: deploy
+  image: THE_DOCKER_IMAGE_YOU_BUILT_ABOVE
+  dependencies: []
+  when: manual
+  variables:
+    CLUSTER_GIT_CLONE_URL: 'your-url'
+    YAML_FILE_PATH: 'your-path'
+    ...
+  script:
+    - /main.sh
+```
+
+## Improvement ideas
+- Think about the best way to use a SSH key through a Dockerfile
+- Add snippets and templates for other tools
