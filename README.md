@@ -9,7 +9,7 @@ It took me some time to achieve this and I was thinking : it's probably sure tha
 It's really possible (I hope not ^^) that I "reinventend the wheel" here so if you know an existing similar repo or way to achieve the exact same purpose, please let me know. I precise that the goal is to avoid the using of an external CLI (like Flux one for example), only git command line, to follow the GitOps philosophy and have a CI pipeline completely independent of the GitOps agent pulling the changes.
 
 ## Assumptions of the current script
-- the .yaml file you want to modify does only describe 1 Deployment having 1 container
+- the .yaml file you want to modify does only describe 1 Deployment having 1 container template
 - Deployment name is the same as the Docker image name (like this : repo/**deployment-name**:tag)
 
 ## Description of environment variables used by the current script
