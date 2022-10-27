@@ -52,3 +52,4 @@ deploy:
 ## Improvement ideas
 - Think about the best way to use a SSH key through a Dockerfile
 - Add snippets and templates for other tools
+- Add a retry scheme in the script : if your CI pipeline is launching parrallel deployment jobs using this image, then some ones can fail with message `cannot lock ref 'refs/heads/master'`
