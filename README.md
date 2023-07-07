@@ -52,4 +52,9 @@ deploy:
 ## Improvement ideas
 - Think about the best way to use a SSH key through a Dockerfile
 - Add snippets and templates for other tools
-- Add a retry scheme in the script : if your CI pipeline is launching parrallel deployment jobs using this image, then some ones can fail with message `cannot lock ref 'refs/heads/master'`
+- Add a retry scheme in the script : if your CI pipeline is launching parrallel deployment jobs (using this image), then some ones can fail with message `cannot lock ref 'refs/heads/master'` :
+  - I tried but it's more complicated that it sounds in Bash (any help or insight will be really appreciated)
+  - _But_ there are two workarounds in Gitlab CI that you can use :
+    - add a `- sleep 5` just before the `- /main.sh` line
+    - **better :** add a `retry: 2` in your deploy job
+
