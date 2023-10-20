@@ -61,3 +61,28 @@ fi
 
 git commit -m "Rolling image $IMAGE_NAME to Deployment $NAMESPACE:deployment/$DOCKER_IMAGE"
 git push
+
+# bonus : notify the right Slack channel regarding the namespace you are deploying to (example for two namespaces called "dev" and "prod")
+if [[ "$NAMESPACE" == "dev" ]] || [[ "$NAMESPACE" == "prod" ]]; then
+
+    if [[ "$NAMESPACE" == "dev" ]]; then
+      SLACK_CHANNEL=${SLACK_DEV_CHANNEL_ID}
+    else
+      SLACK_CHANNEL=${SLACK_PROD_CHANNEL_ID}
+    fi
+
+    # this is the syntax for a Gitlab pipeline, but you get the idea : basically you can build the perfect message that fits your needs
+    COMMIT_URL="$CI_PROJECT_URL/-/commit/$CI_COMMIT_SHA"
+    COMMIT_MESSAGE_CLEANED=$(echo "${CI_COMMIT_MESSAGE}" | tr '"' "'")
+
+    BODY="{\"channel\":\"${SLACK_CHANNEL}\",
+    \"username\":\"gitops-deploy\",
+    \"text\":\"*${SERVICE_NAME}* has been released including this <${COMMIT_URL}|commit>\",
+    \"icon_emoji\":\":rocket:\",
+    \"attachments\":[{\"blocks\":[{\"type\":\"context\",\"elements\":[{\"type\":\"plain_text\",\"text\":\"${COMMIT_MESSAGE_CLEANED}\",\"emoji\":false}]}]}]
+    }";
+
+    echo "Calling Slack API: https://slack.com/api/chat.postMessage with BODY: $BODY"
+    curl -X POST "https://slack.com/api/chat.postMessage" -H "Authorization: Bearer ${SLACK_APP_TOKEN}" -H "Content-type: application/json" --data "$BODY"
+    
+fi
