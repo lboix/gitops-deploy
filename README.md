@@ -19,6 +19,10 @@ It's really possible (I hope not ^^) that I "reinventend the wheel" here so if y
 - DOCKER_REPO : the name of the registry repo of your image to deploy (*repo*/deployment-name:tag)
 - DOCKER_IMAGE : the name of your image to deploy (repo/*deployment-name*:tag)
 - DOCKER_TAG : the tag of your image to deploy (repo/deployment-name:*tag*)
+- SLACK_DEV_CHANNEL_ID (optional) : the Slack channel id dedicated to list your deployments happening in DEV
+- SLACK_PROD_CHANNEL_ID (optional) : the Slack channel id dedicated to list your deployments happening in PROD
+- SLACK_APP_TOKEN (optional) : the Bot User OAuth Token of your Slack app
+  - you also need to make sure that it has the Bot Token Scope `chat:write` (OAuth & Permissions / Scopes)) 
 
 ## How to build your first gitops-deploy image ?
 - simply git clone this repo, if you host it somewhere : make sure this Git repo will be PRIVATE (regarding the SSH key)
