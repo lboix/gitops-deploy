@@ -26,20 +26,19 @@ It's really possible (I hope not ^^) that I "reinventend the wheel" here so if y
   - you also need to make sure that it has the Bot Token Scope `chat:write` (OAuth & Permissions / Scopes)) 
 
 ## How to build your first gitops-deploy image ?
-- simply git clone this repo, if you host it somewhere : make sure this Git repo will be PRIVATE (regarding the SSH key)
+- simply git clone this repo
 - handle the TODO in [Dockerfile](Dockerfile)
-- generate a new SSH key and follow the TODO in [id_rsa](id_rsa) and [id_rsa.pub](id_rsa.pub)
-- add this SSH key to the Git user you put in [Dockerfile](Dockerfile)
+- generate a new SSH key and add the public one to the Git user you put in [Dockerfile](Dockerfile)
 - read [main.sh](main.sh) and adapt it according your needs (do not hesitate to ask questions here!)
 
-- use the [Dockerfile](Dockerfile) to build and push your gitops-deploy image (you can use the [.gitlab-ci.yml](.gitlab-ci.yml) template if host your repo in Gitlab) : make sure your image access will be PRIVATE (regarding the SSH key)
+- use the [Dockerfile](Dockerfile) to build and push your gitops-deploy image (you can use the [.gitlab-ci.yml](.gitlab-ci.yml) template if host your repo in Gitlab)
 
 ## How to use it ?
 - at the end of your CI pipeline, you can use docker CLI directly (if your job has access to it of course) like this :
 ```
 docker run -e CLUSTER_GIT_CLONE_URL=your-url -e YAML_FILE_PATH=your-path ... THE_DOCKER_IMAGE_YOU_BUILT_ABOVE "./main.sh"
 ```
-- if your project is hosted in Gitlab, you can use the equivalent snippet
+- if your project is hosted in Gitlab, you can use the equivalent snippet (if you put the private SSH key in a CI/CD variable, do not forget to leave an empty line at the end after having pasted it in "Value" field)
 ```
 deploy:
   stage: deploy
