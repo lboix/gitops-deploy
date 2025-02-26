@@ -37,6 +37,8 @@ fi
 #     exit 1
 # fi
 
+/prepare_ssh.sh
+
 git clone --depth=1 $CLUSTER_GIT_CLONE_URL
 # if needed :
 # cd some-folder/some-subfolder/

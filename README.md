@@ -14,6 +14,7 @@ It's really possible (I hope not ^^) that I "reinventend the wheel" here so if y
 
 ## Description of environment variables used by the current script
 - CLUSTER_GIT_CLONE_URL : the cluster Git repo URL to git clone (through SSH)
+- GIT_REPO_USER_RSA : the private SSH key linked to the user you are using to git clone your manifests repo
 - YAML_FILE_PATH : the path to the .yaml file containing the Deployment to update
 - NAMESPACE : the namespace belonging to your Deployment
 - DOCKER_REPO : the name of the registry repo of your image to deploy (*repo*/deployment-name:tag)
@@ -54,9 +55,8 @@ deploy:
 ```
 
 ## Improvement ideas
-- Think about the best way to use a SSH key through a Dockerfile
 - Add snippets and templates for other tools
-- Add a retry scheme in the script : if your CI pipeline is launching parrallel deployment jobs (using this image), then some ones can fail with message `cannot lock ref 'refs/heads/master'` :
+- Add a retry scheme in the script : if your CI pipeline is launching parallel deployment jobs (using this image), then some ones can fail with message `cannot lock ref 'refs/heads/master'` :
   - I tried but it's more complicated that it sounds in Bash (any help or insight will be really appreciated)
   - _But_ there are two workarounds in Gitlab CI that you can use :
     - add a `- sleep 5` just before the `- /main.sh` line
